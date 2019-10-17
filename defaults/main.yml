@@ -1,0 +1,3 @@
+---
+# defaults file for ajsalminen.mysql_database
+mysql_database_collata: "utf8_swedish_ci"

@@ -1,22 +1,22 @@
 ---
 
     - name: Delete MySQL databases # depends on python-mysqldb (currently installed in various-packages)
-      mysql_db: name={{mysql_database_details.name}} state=absent
+      mysql_db: name={{ mysql_database_details.name }} state=absent
       when: mysql_database_reinstall is defined
 
     - name: Create MySQL databases # depends on python-mysqldb (currently installed in various-packages)
-      mysql_db: name={{mysql_database_details.name}} collation=utf8_unicode_ci state=present
+      mysql_db: name={{ mysql_database_details.name }} collation={{ mysql_database_collata }} state=present
       register: db_created
 
     - name: Copy dump on VM
       copy: >
-        src={{mysql_database_details.dump}}
-        dest=/tmp/{{mysql_database_details.name}}.sql
+        src={{ mysql_database_details.dump }}
+        dest=/tmp/{{ mysql_database_details.name }}.sql
       when: mysql_database_details.dump is defined and db_created.changed
 
 
     - name: Import database dump
-      mysql_db: name={{mysql_database_details.name}} state=import target=/tmp/{{mysql_database_details.name}}.sql
+      mysql_db: name={{ mysql_database_details.name }} state=import target=/tmp/{{ mysql_database_details.name }}.sql
       when: mysql_database_details.dump is defined and db_created.changed
 
 
